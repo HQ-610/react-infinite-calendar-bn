@@ -44,6 +44,7 @@ export const withDefaultProps = defaultProps({
   tabIndex: 1,
   width: 400,
   YearsComponent: Years,
+  MonthHeader: null,
 });
 
 export default class Calendar extends Component {
@@ -326,6 +327,7 @@ export default class Calendar extends Component {
       maxDate,
       min,
       max,
+      MonthHeader,
     } = this.props;
     const {
       hideYearsOnSelect,
@@ -422,6 +424,7 @@ export default class Calendar extends Component {
               showOverlay={showOverlay}
               width={width}
               initialScrollDate={initialScrollDate}
+              MonthHeader={MonthHeader}
             />
           </div>
           {display === 'years' && (

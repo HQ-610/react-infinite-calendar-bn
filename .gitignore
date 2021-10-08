@@ -3,7 +3,7 @@
 /es
 /lib
 /node_modules
-/umd
+# /umd
 /.out
 .idea/
 styles.css

@@ -69,7 +69,7 @@ export default class MonthList extends Component {
         weekStartsOn,
         index === months.length - 1
       );
-      this.monthHeights[index] = weeks * rowHeight;
+      this.monthHeights[index] = weeks * rowHeight + 49;
     }
 
     return this.monthHeights[index];
@@ -138,7 +138,6 @@ export default class MonthList extends Component {
       height,
     } = this.props;
     const weeks = getWeek(startOfMonth(min), parse(date), weekStartsOn);
-
     return weeks * rowHeight - (height - rowHeight / 2) / 2;
   }
 
@@ -189,6 +188,7 @@ export default class MonthList extends Component {
       showOverlay,
       theme,
       today,
+      MonthHeader,
     } = this.props;
 
     let { month, year } = months[index];
@@ -196,26 +196,32 @@ export default class MonthList extends Component {
     let { date, rows } = this.memoize(key);
 
     return (
-      <Month
-        key={key}
-        selected={selected}
-        DayComponent={DayComponent}
-        monthDate={date}
-        disabledDates={disabledDates}
-        disabledDays={disabledDays}
-        maxDate={maxDate}
-        minDate={minDate}
-        rows={rows}
-        rowHeight={rowHeight}
-        isScrolling={false}
-        showOverlay={showOverlay}
-        today={today}
-        theme={theme}
-        style={style}
-        locale={locale}
-        passThrough={passThrough}
-        {...passThrough.Month}
-      />
+      <div style={style}>
+        {Boolean(MonthHeader) ? (
+          <MonthHeader year={year} month={month} />
+        ) : (
+          <div style={{ textAlign: 'center' }}>{`${year} 年 ${month} 月`}</div>
+        )}
+        <Month
+          key={key}
+          selected={selected}
+          DayComponent={DayComponent}
+          monthDate={date}
+          disabledDates={disabledDates}
+          disabledDays={disabledDays}
+          maxDate={maxDate}
+          minDate={minDate}
+          rows={rows}
+          rowHeight={rowHeight}
+          isScrolling={false}
+          showOverlay={showOverlay}
+          today={today}
+          theme={theme}
+          locale={locale}
+          passThrough={passThrough}
+          {...passThrough.Month}
+        />
+      </div>
     );
   };
 
