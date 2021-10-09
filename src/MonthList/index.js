@@ -2,8 +2,14 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import VirtualList from 'react-tiny-virtual-list';
 import classNames from 'classnames';
-import { animate, emptyFn, getMonth, getWeek, getWeeksInMonth } from '../utils';
-import { addMonths, isSameMonth, parse, startOfMonth } from 'date-fns';
+import { animate, emptyFn, getMonth, getWeeksInMonth } from '../utils';
+import {
+  addMonths,
+  isSameMonth,
+  differenceInMonths,
+  getMonth as OriginGetMonth,
+  getYear,
+} from 'date-fns';
 import Month from '../Month';
 import styles from './MonthList.scss';
 
@@ -137,8 +143,18 @@ export default class MonthList extends Component {
       locale: { weekStartsOn },
       height,
     } = this.props;
-    const weeks = getWeek(startOfMonth(min), parse(date), weekStartsOn);
-    return weeks * rowHeight - (height - rowHeight / 2) / 2;
+    let rows = 0;
+    for (let year = getYear(min); year < getYear(date); year++) {
+      for (let month = 0; month < 12; month++) {
+        rows += getWeeksInMonth(month, year, weekStartsOn);
+      }
+    }
+    for (let month = 0; month < OriginGetMonth(date); month++) {
+      rows += getWeeksInMonth(month, getYear(date), weekStartsOn);
+    }
+
+    const months = differenceInMonths(date, min);
+    return (rows + months) * rowHeight - (height - rowHeight / 2) / 2;
   }
 
   scrollToDate = (date, offset = 0, ...rest) => {
@@ -200,7 +216,9 @@ export default class MonthList extends Component {
         {Boolean(MonthHeader) ? (
           <MonthHeader year={year} month={month} />
         ) : (
-          <div style={{ textAlign: 'center' }}>{`${year} 年 ${month} 月`}</div>
+          <div style={{ textAlign: 'center' }}>{`${year} 年 ${
+            month + 1
+          } 月`}</div>
         )}
         <Month
           key={key}

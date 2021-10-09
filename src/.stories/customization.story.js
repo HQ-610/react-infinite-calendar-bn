@@ -40,6 +40,7 @@ storiesOf('Customization', module)
         weekdays: ['日', '一', '二', '三', '四', '五', '六'],
       }}
       rowHeight={49}
+      // selected={new Date(1983, 5, 17)}
     />
   ))
   .add('Theming', () => (
